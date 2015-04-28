@@ -1,4 +1,6 @@
 package org.sabac
 
-class Policy {
-}
+case class Policy(
+  name: String, 
+  author: Option[String], 
+  rules: List[Rule]);
