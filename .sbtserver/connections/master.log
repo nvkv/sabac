@@ -1,0 +1,13 @@
+New log file opened at Tue Apr 28 13:30:56 YEKT 2015 by 77191@owly.local
+Taking next connection to: 58435
+New client attempting to connect on port: 58436-58435
+  Address = /192.168.2.3:58435
+This client on port 58436 has uuid 4130f86f-e77e-4840-b272-59098b279b97 configName activator humanReadableName Activator protocolVersion 1 featureTags Vector()
+Connected Clients: activator-4130f86f-e77e-4840-b272-59098b279b97
+Taking next connection to: 58435
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 58435
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 58435
