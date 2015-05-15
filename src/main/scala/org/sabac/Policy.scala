@@ -28,6 +28,7 @@ class Policy(policyMap: Map[String, Any]) {
         val rawRules = array.asInstanceOf[RawRules].asScala.toList.filter { m =>
           m.containsKey("rule")
         }
+
         Some(rawRules.map(
           _.asScala.mapValues(
             _.asScala.toList.map(

@@ -13,7 +13,6 @@ class PolicySpec extends FlatSpec with Matchers {
         p.name should equal(Some("sexist"))
         p.rules should not be None
         p.rules.getOrElse(List()).length should equal(1) 
-        println(p.rules)
       }
       case _ => fail()
     }
