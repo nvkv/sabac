@@ -8,6 +8,16 @@ class PolicySpec extends FlatSpec with Matchers {
     val policy = Policy.from("/test-policy.yml")
     policy should matchPattern { case Right(_) => } 
 
+     policy match {
+      case Right(p) => {
+        p.name should equal(Some("sexist"))
+        p.rules should not be None
+        p.rules.getOrElse(List()).length should equal(1) 
+        println(p.rules)
+      }
+      case _ => fail()
+    }
+
     val badPolicy = Policy.from("no-such-file-lol")
     badPolicy should matchPattern { case Left(_) => }
   }
