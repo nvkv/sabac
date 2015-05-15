@@ -17,7 +17,7 @@ class Policy(policyMap: Map[String, Any]) {
   type AssertionMap = Map[String, AssertionPredicate]
   type AssertionPredicate = Map[String, String]
   
-  private def extractRules(map: Map[String, Any]): Option[List[RuleMap]] = 
+  private def extractRules(map: Map[String, Any]): Option[List[Rule]] = 
     map.get("rules") match {
       case Some(array) => {
 

@@ -1,5 +1,3 @@
 package org.sabac
 
-case class Rule(
-  name: Option[String],
-  assertions: List[Assertion]);
+case class Rule(assertions: List[Assertion])
