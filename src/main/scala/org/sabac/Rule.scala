@@ -7,9 +7,7 @@ object Rule {
   import PolicySchema._
 
   def fromMapAssertionsList(list: List[AssertionMap]): Option[Rule] = {
-    val assertions = list map { amap: AssertionMap => 
-      Assertion.fromMap(amap) 
-    } flatMap(a => a)
+    val assertions = list map { amap => Assertion.fromMap(amap) } flatMap(a => a)
     Some(new Rule(assertions.flatten))
   }
 
@@ -17,8 +15,7 @@ object Rule {
     Some(
       list map { rmap => 
         rmap.toList match {
-          case List((_, assertions: List[AssertionMap])) => 
-            fromMapAssertionsList(assertions) 
+          case List((_, assertions)) => fromMapAssertionsList(assertions) 
           case _ => None
         }
       } flatMap(a => a))
