@@ -1,26 +1,29 @@
 package org.sabac
 
 import org.yaml.snakeyaml.Yaml
-import java.util.ArrayList
-import java.util.LinkedHashMap
+import java.util.{ArrayList, LinkedHashMap}
 import scala.collection._
 import scala.io.Source
 import scala.collection.JavaConverters._
 import scala.language.existentials
 
 
-class Policy(policyMap: Map[String, Any]) {
-  val name = policyMap.get("policy").asInstanceOf[Option[String]]
-  val rules = extractRules(policyMap)
-
+object PolicySchema {
   type RuleMap = Map[String, List[AssertionMap]]
   type AssertionMap = Map[String, AssertionPredicate]
   type AssertionPredicate = Map[String, String]
+}
+
+
+class Policy(policyMap: Map[String, Any]) {
+
+  import PolicySchema._
+  val name = policyMap.get("policy").asInstanceOf[Option[String]]
+  val rules = extractRules(policyMap)
   
   private def extractRules(map: Map[String, Any]): Option[List[Rule]] = 
     map.get("rules") match {
       case Some(array) => {
-
         type RawAssertion = LinkedHashMap[String, LinkedHashMap[String, String]]
         type RawRule = LinkedHashMap[String, ArrayList[RawAssertion]]
         type RawRules = ArrayList[RawRule]
@@ -29,11 +32,11 @@ class Policy(policyMap: Map[String, Any]) {
           m.containsKey("rule")
         }
 
-        Some(rawRules.map(
-          _.asScala.mapValues(
-            _.asScala.toList.map(
-              _.asScala.mapValues(_.asScala)))))
-                
+        Rule.fromList(
+          rawRules.map(
+            _.asScala.mapValues(
+              _.asScala.toList.map(
+                _.asScala.mapValues(_.asScala)))))
       }
       case None => None
     }
