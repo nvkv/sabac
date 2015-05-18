@@ -38,8 +38,6 @@ class Policy(policyMap: Map[String, Any]) {
             _.asScala.mapValues(
               _.asScala.toList.map(
                 _.asScala.mapValues(_.asScala))))
-        println(rules)
-
         Rule.fromList(rules)
       }
       case None => None
