@@ -28,3 +28,4 @@ class PolicySpec extends FlatSpec with Matchers {
     badPolicy should matchPattern { case Left(_) => }
   }
 }
+
