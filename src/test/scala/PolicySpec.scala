@@ -14,7 +14,12 @@ class PolicySpec extends FlatSpec with Matchers {
         p.rules should not be None
         val rules = p.rules.getOrElse(List())
         rules.length should equal(1) 
-        rules.head.assertions.length should equal(6)
+        val assertions = rules.head.assertions
+        assertions.length should equal(6)
+        val act = assertions.head
+        act.left should equal("subject.action")
+        act.predicate should equal("is")
+        act.right should equal("view")
       }
       case _ => fail()
     }

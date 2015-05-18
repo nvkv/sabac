@@ -32,8 +32,6 @@ class Policy(policyMap: Map[String, Any]) {
           m.containsKey("rule")
         }
 
-        println(rawRules)
-
         val rules = rawRules.map(
             _.asScala.mapValues(
               _.asScala.toList.map(
