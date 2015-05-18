@@ -6,15 +6,12 @@ object Assertion {
 
   import PolicySchema._
 
-  def fromMap(map: AssertionMap): Option[Assertion] = {
-    map.toList match {
-      case List((left, rightExpr)) => 
-        rightExpr.toList match {
-          case List((predicate, right)) => 
-            Some(Assertion(left, predicate, right))
-          case _ => None
-        }
-        case _ => None
+  def fromMap(m: AssertionMap): Option[List[Assertion]] = {
+    val assertions =  m map { case (left, rightExpr) => 
+      rightExpr.toList match { case List((predicate, right)) => 
+        new Assertion(left, predicate, right)
+      }
     }
+    Some(assertions.toList)
   }
 }

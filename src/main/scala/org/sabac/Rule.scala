@@ -10,7 +10,7 @@ object Rule {
     val assertions = list map { amap: AssertionMap => 
       Assertion.fromMap(amap) 
     } flatMap(a => a)
-    Some(new Rule(assertions))
+    Some(new Rule(assertions.flatten))
   }
 
   def fromList(list: List[RuleMap]): Option[List[Rule]] =
