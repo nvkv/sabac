@@ -13,9 +13,9 @@ rules:
     object.groups: {contains: G2}
 
 - rule:
-    allow-if:
-      - subject.action: {is: view}
-      - *clearance
-      - *female-g1
-      - subject.hairColor: {is:  Blond}
-      - subject.hair: {is: None}
+  - subject.action: {is: view}
+  - *clearance
+  - *female-g1
+  - subject.hairColor: {is:  Blond}
+  - subject.hair: {is: None}
+
