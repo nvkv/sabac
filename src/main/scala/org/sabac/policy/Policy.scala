@@ -1,5 +1,7 @@
 package org.sabac.policy
 
+import org.sabac.attributes._
+
 import org.yaml.snakeyaml.Yaml
 import java.util.{ArrayList, LinkedHashMap}
 import java.net.URL
@@ -41,6 +43,17 @@ class Policy(policyMap: Map[String, Any]) {
         Rule.fromList(rules)
       }
       case None => None
+    }
+
+  /**
+   * Apply current policy to specified attributes and get a result
+   */
+  def apply(obj: Attributes, subj: Attributes, env: Attributes): Result = 
+    rules.getOrElse(List()).foldLeft(NotApplicable: Result) { (acc, rule) =>
+       acc match {
+          case Deny(m) => acc
+          case _ => rule.apply(obj, subj, env)
+      }
     }
 }
 

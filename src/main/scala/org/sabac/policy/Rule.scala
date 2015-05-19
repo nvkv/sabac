@@ -1,6 +1,13 @@
 package org.sabac.policy
 
-case class Rule(assertions: List[Assertion])
+import org.sabac.attributes._
+
+case class Rule(assertions: List[Assertion]) {
+ 
+  def apply(obj: Attributes, subj: Attributes, env: Attributes): Result = 
+    Deny("Not implemented") 
+}
+
 
 object Rule {
 
@@ -19,4 +26,5 @@ object Rule {
           case _ => None
         }
       } flatMap(a => a))
+
 }
