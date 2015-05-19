@@ -1,7 +1,8 @@
-package org.sabac
+package org.sabac.policy
 
 import org.yaml.snakeyaml.Yaml
 import java.util.{ArrayList, LinkedHashMap}
+import java.net.URL
 import scala.collection._
 import scala.io.Source
 import scala.collection.JavaConverters._
@@ -18,6 +19,7 @@ object PolicySchema {
 class Policy(policyMap: Map[String, Any]) {
 
   import PolicySchema._
+
   val name = policyMap.get("policy").asInstanceOf[Option[String]]
   val rules = extractRules(policyMap)
   
@@ -45,22 +47,30 @@ class Policy(policyMap: Map[String, Any]) {
 
 object Policy {
 
-  def from(fileName: String): Either[String, Policy] = {
-    val policyUrl = getClass.getResource(fileName)
+  /**
+   * Create Policy object from URL 
+   * */
+  def fromUrl(policyUrl: URL): Either[String, Policy] = {
     if (policyUrl == null) {
       return Left("Policy file not found")
     }
-
     val yamlStr = Source.fromURL(policyUrl).mkString
     val yaml = new Yaml()
     val policyMap = yaml.load(yamlStr) match {
        case hashMap: java.util.HashMap[_, _] => Some(hashMap.asScala)
        case _ => None
     }
-
     policyMap match {
       case Some(map) => Right(new Policy(map.asInstanceOf[Map[String, Any]]))
       case None => Left("Bad policy file")
     }
+  }
+
+  /**
+   * Create Policy object with bundled fixture
+   */
+  def fromTestFile(fileName: String): Either[String, Policy] = {
+    val policyUrl = getClass.getResource(fileName)
+    fromUrl(policyUrl)
   }
 }

@@ -1,14 +1,19 @@
 import org.scalatest._
 import org.scalatest.matchers.ShouldMatchers
-import org.sabac._
+import org.sabac.policy._
 
 class PolicySpec extends FlatSpec with Matchers {
 
   "Policy" should "be created from YAML policy file" in {
-    val policy = Policy.from("/test-policy.yml")
+    val policy = Policy.fromTestFile("/test-policy.yml")
     policy should matchPattern { case Right(_) => } 
+    val badPolicy = Policy.fromTestFile("no-such-file-lol")
+    badPolicy should matchPattern { case Left(_) => }
+  }
 
-     policy match {
+  it should "create valid policy from source" in {
+    val policy = Policy.fromTestFile("/test-policy.yml")
+    policy match {
       case Right(p) => {
         p.name should equal(Some("sexist"))
         p.rules should not be None
@@ -23,9 +28,6 @@ class PolicySpec extends FlatSpec with Matchers {
       }
       case _ => fail()
     }
-
-    val badPolicy = Policy.from("no-such-file-lol")
-    badPolicy should matchPattern { case Left(_) => }
   }
 }
 

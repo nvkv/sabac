@@ -1,4 +1,4 @@
-package org.sabac
+package org.sabac.policy
 
 case class Rule(assertions: List[Assertion])
 

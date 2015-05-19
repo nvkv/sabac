@@ -1,4 +1,4 @@
-package org.sabac
+package org.sabac.policy
 
 case class Assertion(left: String, predicate: String, right: String)
 
