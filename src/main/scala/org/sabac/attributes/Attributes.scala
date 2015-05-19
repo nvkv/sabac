@@ -1,4 +1,8 @@
 package org.sabac.attributes
 
-class Attributes(attrs: Map[String, Any]) {
+class Attributes(val attrs: Map[String, Any]) {
+
+  def get(key: String): Option[Any] = {
+    attrs.get(key)
+  }
 }

@@ -52,7 +52,20 @@ class PolicySpec extends FlatSpec with Matchers {
     val obj = new Attributes(Map("secLevel" -> 8))
     val env = new Attributes(Map("weather" -> "clean"))
 
-    policy.apply(subj, obj, env) should matchPattern { case NotApplicable => }
+    policy(subj, obj, env) should matchPattern { case NotApplicable => }
+
+    val subj1 = new Attributes(
+      Map(
+        "action" -> "view", 
+        "clearance" -> 1,
+        "sex" -> "Female",
+        "groups" -> "G1",
+        "hairColor" -> "Blond",
+        "hair" -> "None"))
+    val obj1 = new Attributes(Map(
+        "secLevel" -> 1)) 
+
+    policy(subj1, obj1, env) should matchPattern { case Allow => }
   }
 }
 

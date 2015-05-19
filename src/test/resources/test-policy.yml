@@ -5,12 +5,8 @@ rules:
     object.secLevel: {less-or-equal: subject.clearance}
 
 - assertion: &female-g1
-    object.sex: {is: Female}
-    object.groups: {contains: G1} 
-
-- assertion: &male-g2
-    object.sex: {is-any-of: [Male, Female]}
-    object.groups: {contains: G2}
+    subject.sex: {is: Female}
+    subject.groups: {contains: G1} 
 
 - rule:
   - subject.action: {is: view}

@@ -52,7 +52,7 @@ class Policy(policyMap: Map[String, Any]) {
     rules.getOrElse(List()).foldLeft(NotApplicable: Result) { (acc, rule) =>
        acc match {
           case Deny(m) => acc
-          case _ => rule.apply(obj, subj, env)
+          case _ => rule(obj, subj, env)
       }
     }
 }
