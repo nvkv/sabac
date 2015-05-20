@@ -6,13 +6,12 @@ import scala.language.reflectiveCalls
 
 class PolicySpec extends FlatSpec with Matchers {
 
-  def fixture = 
-    new {
-      val testPolicy = Policy.fromTestFile("/test-policy.yml") match {
-        case Right(p) => p
-        case _ => fail()
-      }
+  def fixture = new {
+    val testPolicy = Policy.fromTestFile("/test-policy.yml") match {
+      case Right(p) => p
+      case _ => fail()
     }
+  }
 
   "Policy" should "be created from YAML policy file" in {
     val policy = Policy.fromTestFile("/test-policy.yml")
@@ -20,7 +19,6 @@ class PolicySpec extends FlatSpec with Matchers {
     val badPolicy = Policy.fromTestFile("no-such-file-lol")
     badPolicy should matchPattern { case Left(_) => }
   }
-
 
   it should "create valid policy from source" in {
     val policy = Policy.fromTestFile("/test-policy.yml")
