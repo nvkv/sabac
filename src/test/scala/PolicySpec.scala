@@ -66,6 +66,9 @@ class PolicySpec extends FlatSpec with Matchers {
 
     val subj2 = new Attributes("clearance" -> 0)
     policy(subj2, obj1, env) should matchPattern { case Deny(_) => }
+
+    val subj3 = new Attributes("action" -> "view")
+    policy(subj3, obj1, env) should matchPattern { case NotApplicable => }
   }
 }
 
