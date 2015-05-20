@@ -62,7 +62,7 @@ object Policy {
 
   /**
    * Create Policy object from URL 
-   * */
+   */
   def fromUrl(policyUrl: URL): Either[String, Policy] = {
     if (policyUrl == null) {
       return Left("Policy file not found")
