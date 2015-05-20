@@ -9,26 +9,21 @@ case class Rule(assertions: List[Assertion]) {
   }
   
   case class Obj(v: String) extends AttributeSource {
-    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) =
-      obj.get(v)
+    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = obj.get(v)
   }
 
   case class Subj(v: String) extends AttributeSource {
-    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = 
-      subj.get(v)
+    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = subj.get(v)
   }
 
   case class Env(v: String) extends AttributeSource {
-    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) =
-      env.get(v)
+    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = env.get(v)
   }
   case class Value(v: String) extends AttributeSource {
-    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) =
-      Some(v)
+    def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = Some(v)
   }
 
-  private def trimSource(attrName: String): String = 
-    attrName.split("\\.").last
+  private def trimSource(attrName: String): String = attrName.split("\\.").last
 
   private def sourceAttr(attr: String): AttributeSource = 
     attr match {
