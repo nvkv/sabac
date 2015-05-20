@@ -2,8 +2,17 @@ import org.scalatest._
 import org.scalatest.matchers.ShouldMatchers
 import org.sabac.policy._
 import org.sabac.attributes._
+import scala.language.reflectiveCalls
 
 class PolicySpec extends FlatSpec with Matchers {
+
+  def fixture = 
+    new {
+      val testPolicy = Policy.fromTestFile("/test-policy.yml") match {
+        case Right(p) => p
+        case _ => fail()
+      }
+    }
 
   "Policy" should "be created from YAML policy file" in {
     val policy = Policy.fromTestFile("/test-policy.yml")
@@ -41,19 +50,17 @@ class PolicySpec extends FlatSpec with Matchers {
     }
   }
 
-  "Policy execution" should "be" in {
-    val policy = Policy.fromTestFile("/test-policy.yml") match {
-      case Right(p) => p
-      case _ => fail()
-    }
-
-    val subj = new Attributes("action" -> "view") 
+  "Policy execution" should "hanle not applicable" in {
+    val subj = new Attributes("action" -> "view")
     val obj = new Attributes("secLevel" -> 8)
     val env = new Attributes("weather" -> "clean")
 
-    policy(subj, obj, env) should matchPattern { case NotApplicable => }
+    fixture.testPolicy(subj, obj, env) should matchPattern { case NotApplicable => }
+  }
 
-    val subj1 = new Attributes(
+  it should "handle Allow" in {
+    val env = new Attributes()
+    val subj = new Attributes(
         "action" -> "view", 
         "clearance" -> 11,
         "sex" -> "Female",
@@ -61,14 +68,22 @@ class PolicySpec extends FlatSpec with Matchers {
         "hairColor" -> "Blond",
         "hair" -> "None")
 
-    val obj1 = new Attributes("secLevel" -> 10) 
-    policy(subj1, obj1, env) should matchPattern { case Allow => }
+    val obj = new Attributes("secLevel" -> 10) 
+    fixture.testPolicy(subj, obj, env) should matchPattern { case Allow => }
+  }
 
-    val subj2 = new Attributes("clearance" -> 0)
-    policy(subj2, obj1, env) should matchPattern { case Deny(_) => }
+  it should "Handle Deny" in {
+    val env = new Attributes()
+    val obj = new Attributes("secLevel" -> 10)
+    val subj = new Attributes(
+        "action" -> "view", 
+        "clearance" -> 0,
+        "sex" -> "Female",
+        "groups" -> "G1",
+        "hairColor" -> "Blond",
+        "hair" -> "None")
 
-    val subj3 = new Attributes("action" -> "view")
-    policy(subj3, obj1, env) should matchPattern { case NotApplicable => }
+    fixture.testPolicy(subj, obj, env) should matchPattern { case Deny(_) => }
   }
 }
 
