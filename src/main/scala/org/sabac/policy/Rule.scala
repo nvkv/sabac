@@ -45,10 +45,10 @@ case class Rule(assertions: List[Assertion]) {
         case _ => {
           val left = sourceAttr(assert.left).valueFromContext(subj, obj, env)
           val right = sourceAttr(assert.right).valueFromContext(subj, obj, env)
-          if (left == None || right == None) 
-            NotApplicable
-          else
-            assert(left, right)
+          (left, right) match {
+            case (Some(l), Some(r)) => assert(l, r)
+            case _ => NotApplicable
+          }
         }
       }
     }

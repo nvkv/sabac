@@ -25,7 +25,6 @@ class PolicySpec extends FlatSpec with Matchers {
         assertions.length should equal(6)
         val act = assertions.head
         act.left should equal("subject.action")
-        act.predicate should equal("is")
         act.right should equal("view")
       }
       case Left(_) => fail()
@@ -48,24 +47,25 @@ class PolicySpec extends FlatSpec with Matchers {
       case _ => fail()
     }
 
-    val subj = new Attributes(Map("action" -> "view")) 
-    val obj = new Attributes(Map("secLevel" -> 8))
-    val env = new Attributes(Map("weather" -> "clean"))
+    val subj = new Attributes("action" -> "view") 
+    val obj = new Attributes("secLevel" -> 8)
+    val env = new Attributes("weather" -> "clean")
 
     policy(subj, obj, env) should matchPattern { case NotApplicable => }
 
     val subj1 = new Attributes(
-      Map(
         "action" -> "view", 
-        "clearance" -> 1,
+        "clearance" -> 11,
         "sex" -> "Female",
         "groups" -> "G1",
         "hairColor" -> "Blond",
-        "hair" -> "None"))
-    val obj1 = new Attributes(Map(
-        "secLevel" -> 1)) 
+        "hair" -> "None")
 
+    val obj1 = new Attributes("secLevel" -> 10) 
     policy(subj1, obj1, env) should matchPattern { case Allow => }
+
+    val subj2 = new Attributes("clearance" -> 0)
+    policy(subj2, obj1, env) should matchPattern { case Deny(_) => }
   }
 }
 
