@@ -2,13 +2,13 @@ package org.sabac.policy
 
 trait Assertion {
   val left: String
-  val right: String
+  val right: Any 
 
   def apply(l: Any, r: Any): Result 
 }
 
 
-case class Is(left: String, right: String) extends Assertion {
+case class Is(left: String, right: Any) extends Assertion {
   def apply(l: Any, r: Any): Result = {
     if (l == r) 
       Allow 
@@ -17,7 +17,7 @@ case class Is(left: String, right: String) extends Assertion {
   }
 }
 
-case class Compare(left: String, right: String, predicate: Int => Boolean) extends Assertion {
+case class Compare(left: String, right: Any, predicate: Int => Boolean) extends Assertion {
   
   import java.lang.Number
 

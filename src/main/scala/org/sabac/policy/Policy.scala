@@ -14,7 +14,7 @@ import scala.language.existentials
 object PolicySchema {
   type RuleMap = Map[String, List[AssertionMap]]
   type AssertionMap = Map[String, AssertionPredicate]
-  type AssertionPredicate = Map[String, String]
+  type AssertionPredicate = Map[String, Any]
 }
 
 

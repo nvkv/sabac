@@ -4,34 +4,34 @@ import org.sabac.attributes._
 
 case class Rule(assertions: List[Assertion]) {
 
-  trait AttributeSource {
+  private trait AttributeSource {
     def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes): Option[Any]
   }
   
-  case class Obj(v: String) extends AttributeSource {
+  private case class Obj(v: Any) extends AttributeSource {
     def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = obj.get(v)
   }
 
-  case class Subj(v: String) extends AttributeSource {
+  private case class Subj(v: Any) extends AttributeSource {
     def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = subj.get(v)
   }
 
-  case class Env(v: String) extends AttributeSource {
+  private case class Env(v: Any) extends AttributeSource {
     def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = env.get(v)
   }
-  case class Value(v: String) extends AttributeSource {
+
+  private case class Value(v: Any) extends AttributeSource {
     def valueFromContext(subj: Attributes, obj: Attributes, env: Attributes) = Some(v)
   }
 
   private def trimSource(attrName: String): String = attrName.split("\\.").last
 
-  private def sourceAttr(attr: String): AttributeSource = 
-    attr match {
-      case _ if attr.startsWith("subj") => Subj(trimSource(attr))
-      case _ if attr.startsWith("obj") => Obj(trimSource(attr))
-      case _ if attr.startsWith("env") => Env(trimSource(attr))
-      case _ => Value(attr)
-    }
+  private def sourceAttr(attr: Any): AttributeSource = attr match {
+    case attr: String if attr.startsWith("subj") => Subj(trimSource(attr))
+    case attr: String if attr.startsWith("obj") => Obj(trimSource(attr))
+    case attr: String if attr.startsWith("env") => Env(trimSource(attr))
+    case _ => Value(attr)
+  }
 
   def apply(subj: Attributes, obj: Attributes, env: Attributes): Result = 
     assertions.foldLeft(NotApplicable: Result) { (acc, assert) =>
@@ -54,7 +54,7 @@ object Rule {
 
   import PolicySchema._
 
-  def fromMapAssertionsList(list: List[AssertionMap]): Option[Rule] = {
+  private def fromMapAssertionsList(list: List[AssertionMap]): Option[Rule] = {
     val assertions = list map(Assertion.fromMap(_)) flatMap(a => a)
     if (assertions.length > 0) Some(new Rule(assertions.flatten)) else None
   }
