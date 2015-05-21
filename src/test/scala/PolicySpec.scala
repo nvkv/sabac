@@ -70,7 +70,7 @@ class PolicySpec extends FlatSpec with Matchers {
     fixture.testPolicy(subj, obj, env) should matchPattern { case Allow => }
   }
 
-  it should "Handle Deny" in {
+  it should "handle Deny" in {
     val env = new Attributes()
     val obj = new Attributes("secLevel" -> 10)
     val subj = new Attributes(
