@@ -10,6 +10,7 @@ rules:
 
 - rule:
   - subject.action: {is: view}
+  - subject.group: {in: [G1, G2]}
   - *clearance
   - *female-g1
   - subject.hairColor: {is:  Blond}

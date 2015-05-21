@@ -1,5 +1,8 @@
 package org.sabac.policy
 
+import java.util.ArrayList
+import scala.collection.JavaConversions._
+
 trait Assertion {
   val left: String
   val right: Any 
@@ -32,6 +35,30 @@ case class Compare(left: String, right: Any, predicate: Int => Boolean) extends 
     }
 }
 
+case class In(left: String, right: Any) extends Assertion {
+
+  def apply(l: Any, r: Any): Result = {
+    
+    def check(what: Any, where: Seq[Any]): Result = 
+      if (where contains what) Allow
+      else Deny("In: Assertion failed")
+
+    r match {
+      case lst: ArrayList[_] => check(l, lst.toList)
+      case lst: Seq[_] => check(l, lst)
+      case _ => NotApplicable
+    }
+  }
+}
+
+
+object UnknownPredicate extends Assertion {
+  val left = ""
+  val right = ""
+
+  def apply(l: Any, r: Any): Result = NotApplicable
+}
+
 
 object Assertion {
 
@@ -46,7 +73,8 @@ object Assertion {
           case "less-or-equal" => { Compare(left, right, r => r < 0 || r == 0) }
           case "greater" => Compare(left, right, r => r > 0)
           case "greater-or-equal" => Compare(left, right, r => r == 0 || r > 0)
-          case _ => Is(left, right)
+          case "in" => In(left, right)
+          case _ => UnknownPredicate
         }
       }
     }

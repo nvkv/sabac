@@ -29,7 +29,7 @@ class PolicySpec extends FlatSpec with Matchers {
         val rules = p.rules.getOrElse(List())
         rules.length should equal(1) 
         val assertions = rules.head.assertions
-        assertions.length should equal(6)
+        assertions.length should equal(7)
         val act = assertions.head
         act.left should equal("subject.action")
         act.right should equal("view")
@@ -62,7 +62,7 @@ class PolicySpec extends FlatSpec with Matchers {
         "action" -> "view", 
         "clearance" -> 11,
         "sex" -> "Female",
-        "groups" -> "G1",
+        "group" -> "G1",
         "hairColor" -> "Blond",
         "hair" -> "None")
 
@@ -77,11 +77,14 @@ class PolicySpec extends FlatSpec with Matchers {
         "action" -> "view", 
         "clearance" -> 0,
         "sex" -> "Female",
-        "groups" -> "G1",
+        "group" -> "X1",
         "hairColor" -> "Blond",
         "hair" -> "None")
 
     fixture.testPolicy(subj, obj, env) should matchPattern { case Deny(_) => }
+    
+    val obj2 = new Attributes("secLevel" -> 0)  
+    fixture.testPolicy(subj, obj2, env) should matchPattern { case Deny(_) => }
   }
 }
 
