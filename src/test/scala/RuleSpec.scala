@@ -31,6 +31,26 @@ class RuleSpec extends FlatSpec with Matchers {
   }
 
   "Rule execution" should "return Deny if any assertion returns deny" in {
-    (pending)
+    val rule = new Rule(List(Is("subject.name", "Vasiliy")))
+    rule(
+      new Attributes("name" -> "Innokentiy"),
+      new Attributes(),
+      new Attributes()) should matchPattern { case Deny(_) => }
+  }
+
+  it should "be able to see difference between prefixed values and attribute references" in {
+    val rule = new Rule(List(Is("subject.name", "subject")))
+    rule(
+      new Attributes("name" -> "Abraham"),
+      new Attributes(),
+      new Attributes()) should matchPattern { case Deny(_) => }
+  }
+
+  it should "return Not Applicable if any assertion say so" in {
+    val rule = new Rule(List(Compare("subject.name", 42, r => r > 0)))
+    rule(
+      new Attributes("name" -> "Innokentiy"),
+      new Attributes(),
+      new Attributes()) should matchPattern { case NotApplicable => }
   }
 }

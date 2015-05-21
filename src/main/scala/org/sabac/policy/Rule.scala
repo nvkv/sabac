@@ -27,9 +27,9 @@ case class Rule(assertions: List[Assertion]) {
   private def trimSource(attrName: String): String = attrName.split("\\.").last
 
   private def sourceAttr(attr: Any): AttributeSource = attr match {
-    case attr: String if attr.startsWith("subj") => Subj(trimSource(attr))
-    case attr: String if attr.startsWith("obj") => Obj(trimSource(attr))
-    case attr: String if attr.startsWith("env") => Env(trimSource(attr))
+    case attr: String if attr.startsWith("subject.") => Subj(trimSource(attr))
+    case attr: String if attr.startsWith("object.") => Obj(trimSource(attr))
+    case attr: String if attr.startsWith("environment.") => Env(trimSource(attr))
     case _ => Value(attr)
   }
 
