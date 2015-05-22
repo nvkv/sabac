@@ -48,6 +48,10 @@ class PolicySpec extends FlatSpec with Matchers {
     }
   }
 
+  it should "give some yelling about wrong Policy format" in {
+    (pending)
+  }
+
   "Policy execution" should "hanle not applicable" in {
     val subj = new Attributes("action" -> "view")
     val obj = new Attributes("secLevel" -> 8)

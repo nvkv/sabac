@@ -14,5 +14,4 @@ libraryDependencies += "org.yaml" % "snakeyaml" % "1.15"
 // Uncomment to use Akka
 //libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.9"
 
-
 fork in run := true
