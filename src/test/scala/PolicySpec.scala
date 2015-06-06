@@ -44,7 +44,7 @@ class PolicySpec extends FlatSpec with Matchers {
         policy.name should equal(Some("minimal"))
         policy.rules.getOrElse(List()).length should equal(1)
       }
-      case _ ⇒ fail()
+      case Left(msg) ⇒ fail(msg)
     }
   }
 
