@@ -30,7 +30,7 @@ class Policy(policyMap: Map[String, Any]) {
           type RawAssertion = LinkedHashMap[String, LinkedHashMap[String, String]]
           type RawRule = LinkedHashMap[String, ArrayList[RawAssertion]]
           type RawRules = ArrayList[RawRule]
-          
+
           val rawRules = array.asInstanceOf[RawRules].asScala.toList.filter { m ⇒
             m.containsKey("rule")
           }

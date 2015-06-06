@@ -23,7 +23,7 @@ class RuleSpec extends FlatSpec with Matchers {
     new Rule(List()) should not be null
   }
 
-  it should "be have apply method" in {
+  it should "be have apply method" in {    
     new Rule(List())(
       new Attributes(),
       new Attributes(),
