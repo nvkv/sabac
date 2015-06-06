@@ -1,0 +1,4 @@
+policy: minimal 
+rules:
+- rule:
+- subject.action: {is: view}
