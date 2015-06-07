@@ -1,8 +1,9 @@
 {
-policy: minimal,
-  rules: [{ 
+  policy: minimal,
+  rules: [{
     rule: [
-      {subject.action: {is: view}}
+      {subject.action: {is: view}},
+      {admin: {in: subject.roles}}
     ]
   }]
 }

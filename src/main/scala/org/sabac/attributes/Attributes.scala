@@ -9,6 +9,12 @@ class Attributes(as: (Any, Any)*) {
   }
   
   def merge(other: Attributes): Attributes = {
-    new Attributes((this.attrs.toSeq ++ other.attrs.toSeq): _*)
+    val mergedMap = ((this.attrs.keySet ++ other.attrs.keySet) map { i => 
+      i -> (this.attrs.get(i).toList ::: other.attrs.get(i).toList) 
+    })
+    val result = mergedMap.toMap.map { case (k, values) => 
+      if (values.length == 1) (k, values.head) else (k, values) 
+    }
+    new Attributes(result.toSeq: _*)
   }
 }

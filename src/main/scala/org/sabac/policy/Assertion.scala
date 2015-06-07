@@ -15,7 +15,7 @@ case class Is(left: String, right: Any) extends Assertion {
     if (l == r)
       Allow
     else
-      Deny("Is: Assertion failed")
+      Deny(s"Is: Assertion failed: ${l} not ${r}")
   }
 }
 
@@ -40,12 +40,12 @@ case class In(left: String, right: Any) extends Assertion {
 
     def check(what: Any, where: Seq[Any]): Result =
       if (where contains what) Allow
-      else Deny("In: Assertion failed")
+      else Deny(s"In: Assertion failed: ${what} not in ${where}")
 
     r match {
       case lst: ArrayList[_] ⇒ check(l, lst.toList)
       case lst: Seq[_]       ⇒ check(l, lst)
-      case _                 ⇒ NotApplicable
+      case any               ⇒ Is(left, right)(l, any)
     }
   }
 }
