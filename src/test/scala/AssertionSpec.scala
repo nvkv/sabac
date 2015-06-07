@@ -81,7 +81,7 @@ class AssertionSpec extends FlatSpec with Matchers {
       case Some(List(assertion)) => {
         assertion(1, List(1, 2, 3)) should matchPattern { case Allow => }
         assertion("something useless", List(1,2,3)) should matchPattern { case Deny(_) => }
-        assertion("Vasya", "Petya") should matchPattern { case NotApplicable => }
+        assertion("Vasya", "Petya") should matchPattern { case Deny(_) => }
       }
     }
   }
